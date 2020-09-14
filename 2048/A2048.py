@@ -68,7 +68,7 @@ def check_state(): #checks for valid moves
     return
 
 def flip(direction):
-    copy_tiles() #update previous_tiles to be copied from
+
     if direction[0] != 0: #Set order (should probably be hardcoded in at some point)
         one_side = (0,0)
         other_side = (size-1,0)
@@ -78,8 +78,23 @@ def flip(direction):
         other_side = (0, size-1)
         increment = (1,0)
 
-    print(other_side)
+    for i in range(size):
+        y1 = one_side[0] + increment[0] * i
+        x1 = one_side[1] + increment[1] * i
+
+        if tiles[y1][x1] != previous_tiles[y1][x1]:
+            return
     
+    copy_tiles() #update previous_tiles to be copied from
+    
+    for i in range(size):
+        y1 = one_side[0] + increment[0] * i
+        y2 = other_side[0] + increment[0] * i
+        x1 = one_side[1] + increment[1] * i
+        x2 = other_side[1] + increment[1] * i
+
+        tiles[y2][x2] = previous_tiles[y1][x1] 
+        tiles[y1][x1] = previous_tiles[y2][x2]
     return
 
 def merge(direction):
@@ -162,8 +177,8 @@ def move(k):
     merge(direction[k])
     move_tiles(direction[k])
     if previous_tiles != tiles:
-        add_tiles()
         flip(direction[k])
+        add_tiles()
     else:
         set_empty()
         if empty == []:
