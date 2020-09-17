@@ -12,6 +12,7 @@ end = 0
 maze_parts = ["_","_|","|", "|_"]
 
 seen = []
+turns = []
 seen_index = 0
 maze = []
 
@@ -20,21 +21,28 @@ directions = [(1,0),(0,1),(-1,0),(0,-1)] #y,x
 
 def move(location):
     #randomly select aa direction other than the previous
-    global previous_move, seen
+    global previous_move, seen, turns
 
     valid = []
     for i in directions:
         if i != previous_move:
-            print(location[0] + i[0],location[1] + i[1])
+            #print(location[0] + i[0],location[1] + i[1])
             if maze[location[0] + i[0]][location[1] + i[1]] != "BBB":
                 if not [location[0] + i[0],location[1] + i[1]] in seen:
                     valid += [(i[0], i[1])]
-    print(valid)
+    #print(valid)
+    
     if valid == []:
-        return [0]
+        if len(turns) > 0:
+            return turns.pop()
+        else:
+            return [0]
     
     temp = random.choice(valid)
 
+    if temp != [previous_move[0], previous_move[0]]:
+        turns += [[location[0],location[1]]]
+        
     if temp[0] != 0:#offsets
         one_wall = (0,1)
         other_wall = (0,-1)
@@ -52,11 +60,15 @@ def move(location):
 
 def generate_path():
     global seen
-    start = random.randrange(size[1])
+    start = random.randrange(1,size[1]-1)
+    end = random.randrange(1,size[1]-1)
+
     maze[0][start] = ""
     maze[1][start] = ""
-
-    seen += [[0,start],[1,start]]
+    maze[-1][end] = ""
+    maze[-2][end] = ""
+    
+    seen += [[0,start],[1,start],[size[0]-1, end],[size[0]-2, end]]
     
     location = [1,start] #y,x
 
