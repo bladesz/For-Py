@@ -3,8 +3,10 @@ To generate a "hedgemaze" by first generating a correct path
 then connecting the empty parts to the original path currently uses text representation
 '''
 import random
+import numpy as np
+import cv2
 
-size = 38,38 #x,y
+size = 38,40 #x,y
 
 start = 0
 end = 0
@@ -18,6 +20,9 @@ maze = []
 
 previous_move = (-1,0) #y,x
 directions = [(1,0),(0,1),(-1,0),(0,-1)] #y,x
+
+def generate_image():
+    maze_img = np.zeros((size[0],size[1]))
 
 def move(location):
     #randomly select aa direction other than the previous
@@ -34,12 +39,12 @@ def move(location):
         else:
             seen += [[location[0],location[1]]]
             print(seen)
-            for x in range(size[1]):
-                if not [size[0]-1,x] in seen:
+            for x in range(size[0]):
+                if not [size[1]-1,x] in seen:
                     print([size[0]-1,x])
-                    maze[size[0]-1][x] = "BB"
+                    maze[size[1]-1][x] = "BB"
                 else:
-                    maze[size[0]-1][x] = ""
+                    maze[size[1]-1][x] = ""
     #print(valid)
     
     if valid == []:
@@ -114,6 +119,7 @@ def generate_maze():
 def main():
     generate_maze()
     generate_path()
+    generate_image()
     print_maze()
     return
 

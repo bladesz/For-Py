@@ -4,7 +4,7 @@ then connecting the empty parts to the original path currently uses text represe
 '''
 import random
 
-size = 38,38 #x,y
+size = 38,66 #x,y
 
 start = 0
 end = 0
@@ -27,19 +27,19 @@ def move(location):
     for i in directions:
         #if i != previous_move:
         #print(location[0] + i[0],location[1] + i[1])
-        if location[0] + i[0] < size[0] and location[1] + i[1] < size[1]:
+        if location[0] + i[0] < size[1] and location[1] + i[1] < size[0]:
             if maze[location[0] + i[0]][location[1] + i[1]] != "BB":
                 if not [location[0] + i[0],location[1] + i[1]] in seen:
                     valid += [(i[0], i[1])]
         else:
             seen += [[location[0],location[1]]]
-            print(seen)
-            for x in range(size[1]):
-                if not [size[0]-1,x] in seen:
-                    print([size[0]-1,x])
-                    maze[size[0]-1][x] = "BB"
+            #print(seen)
+            for x in range(size[0]):
+                if not [size[1]-1,x] in seen:
+                    #print([size[1]-1,x])
+                    maze[size[1]-1][x] = "BB"
                 else:
-                    maze[size[0]-1][x] = ""
+                    maze[size[1]-1][x] = ""
     #print(valid)
     
     if valid == []:
