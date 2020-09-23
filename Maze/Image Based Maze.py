@@ -1,12 +1,12 @@
 '''
 To generate a "hedgemaze" by first generating a correct path
-then connecting the empty parts to the original path currently uses text representation
+then connecting the empty parts to the original path image representation with each grid being by default 1x1 pixel
 '''
 import random
 import numpy as np
 import cv2
 
-size = 38,40 #x,y
+size = 400,400 #x,y
 
 start = 0
 end = 0
@@ -21,8 +21,16 @@ maze = []
 previous_move = (-1,0) #y,x
 directions = [(1,0),(0,1),(-1,0),(0,-1)] #y,x
 
-def generate_image():
-    maze_img = np.zeros((size[0],size[1]))
+def generate_img():
+    img = np.zeros((size[0],size[1],3),np.uint8)
+    for y in range(len(maze)):
+        for x in range(len(maze[y])):
+            if maze[y][x] != "BB":
+                img[y,x] = [255,255,255]
+
+    cv2.imwrite("Maze" + str(size[0]) + "x" + str(size[1]) + ".png", img)
+            
+    return
 
 def move(location):
     #randomly select aa direction other than the previous
@@ -32,16 +40,16 @@ def move(location):
     for i in directions:
         #if i != previous_move:
         #print(location[0] + i[0],location[1] + i[1])
-        if location[0] + i[0] < size[0] and location[1] + i[1] < size[1]:
+        if location[0] + i[0] < size[1] and location[1] + i[1] < size[0]:
             if maze[location[0] + i[0]][location[1] + i[1]] != "BB":
                 if not [location[0] + i[0],location[1] + i[1]] in seen:
                     valid += [(i[0], i[1])]
         else:
             seen += [[location[0],location[1]]]
-            print(seen)
+            #print(seen)
             for x in range(size[0]):
                 if not [size[1]-1,x] in seen:
-                    print([size[0]-1,x])
+                    #print([size[1]-1,x])
                     maze[size[1]-1][x] = "BB"
                 else:
                     maze[size[1]-1][x] = ""
@@ -75,8 +83,7 @@ def move(location):
 
 def generate_path():
     global seen
-    start = random.randrange(1,size[1]-1)
-    end = random.randrange(1,size[1]-1)
+    start = random.randrange(1,size[0]-2)
 
     maze[0][start] = ""
     maze[1][start] = ""
@@ -119,8 +126,9 @@ def generate_maze():
 def main():
     generate_maze()
     generate_path()
-    generate_image()
-    print_maze()
+    #print_maze()
+    generate_img()
+    print("done")
     return
 
 main()
