@@ -6,7 +6,9 @@ import random
 import numpy as np
 import cv2
 
-size = 400,400 #x,y
+from datetime import datetime
+
+size = 20,20 #x,y
 
 start = 0
 end = 0
@@ -23,8 +25,8 @@ directions = [(1,0),(0,1),(-1,0),(0,-1)] #y,x
 
 def generate_img():
     img = np.zeros((size[0],size[1],3),np.uint8)
-    for y in range(len(maze)):
-        for x in range(len(maze[y])):
+    for y in range(size[0]):
+        for x in range(size[1]):
             if maze[y][x] != "BB":
                 img[y,x] = [255,255,255]
 
@@ -101,7 +103,8 @@ def print_maze():
     for i in maze:
         for j in i:
             if len(j):
-                print("["+str(j)+"]", end="")
+                print("[%s]"%(j), end="")
+                #print("["+str(j)+"]", end="")
             else:
                 print("[  ]", end="")
         print()
@@ -124,11 +127,13 @@ def generate_maze():
     return
 
 def main():
+    start=datetime.now()
     generate_maze()
     generate_path()
-    #print_maze()
+    print_maze()
     generate_img()
     print("done")
+    print(datetime.now()-start)
     return
 
 main()

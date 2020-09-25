@@ -70,7 +70,7 @@ def move(location):
 
 def generate_path():
     global seen
-    start = random.randrange(1,size[0]-1)
+    start = random.randrange(1,size[0]-2)
 
     maze[0][start] = ""
     maze[1][start] = ""
