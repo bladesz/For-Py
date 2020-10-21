@@ -1,19 +1,18 @@
 '''
 To generate a "hedgemaze" by first generating a correct path
 then connecting the empty parts to the original path image representation with each grid being by default 1x1 pixel
+
+Current to do is to replace maze with something less awful and remove redundencies
 '''
 import random
 import numpy as np
 import cv2
+import time
 
-from datetime import datetime
-
-size = 20,20 #x,y
+size = 220,220 #x,y
 
 start = 0
 end = 0
-
-maze_parts = ["_","_|","|", "|_"]
 
 seen = []
 turns = []
@@ -104,7 +103,6 @@ def print_maze():
         for j in i:
             if len(j):
                 print("[%s]"%(j), end="")
-                #print("["+str(j)+"]", end="")
             else:
                 print("[  ]", end="")
         print()
@@ -127,13 +125,12 @@ def generate_maze():
     return
 
 def main():
-    start=datetime.now()
     generate_maze()
     generate_path()
-    print_maze()
+    #print_maze()
     generate_img()
     print("done")
-    print(datetime.now()-start)
+    print(time.process_time())
     return
 
 main()

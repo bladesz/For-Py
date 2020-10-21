@@ -3,13 +3,12 @@ To generate a "hedgemaze" by first generating a correct path
 then connecting the empty parts to the original path currently uses text representation
 '''
 import random
+import time
 
-size = 40,66 #x,y
+size = 220,220 #x,y
 
 start = 0
 end = 0
-
-maze_parts = ["_","_|","|", "|_"]
 
 seen = []
 turns = []
@@ -72,8 +71,8 @@ def generate_path():
     global seen
     start = random.randrange(1,size[0]-2)
 
-    maze[0][start] = ""
-    maze[1][start] = ""
+    maze[0][start] = ["  "]
+    maze[1][start] = ["  "]
     
     seen += [[0,start],[1,start]]
     
@@ -86,34 +85,43 @@ def generate_path():
 
 def print_maze():
     for i in maze:
-        for j in i:
-            if len(j):
-                print("["+str(j)+"]", end="")
-            else:
-                print("[  ]", end="")
-        print()
+        print(i)
     return
 
 def reset_seen():
     seen = []
     return
 
+def generate_edges():
+    for i in range(size[0]):
+        maze[i][0] = ["BB"]
+        maze[i][-1] = ["BB"]
+        seen.append([i,0])
+        seen.append([i,size[1]])
+    for j in range(size[1]):
+        maze[0][j] = ["BB"]
+        maze[-1][j] = ["BB"]
+        seen.append([0,j])
+        seen.append([size[0],j])
+    return
+
 def generate_maze():
     global maze
     reset_seen()
-    for y in range(size[1]):
-        maze += [[]]
-        for x in range(size[0]):
-            if y == 0 or x == 0 or x == size[0]-1:
-                maze[y] += ["BB"]
-            else:
-                maze[y] += [[]]
+
+    for i in range(size[0]):
+        maze.append(["  "])
+        for j in range(size[1]):
+            maze[i].append(["  "])
+    generate_edges()
     return
 
 def main():
     generate_maze()
     generate_path()
-    print_maze()
+    #print_maze()
+    print(time.process_time())
+    print("done")
     return
 
 main()
