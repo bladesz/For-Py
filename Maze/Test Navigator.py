@@ -9,8 +9,34 @@ image = cv2.imread(png_input+".png")
 size = len(image)
 path = []
 
-def bfs(path):
+linked_dict={}
 
+def pathfinder(location):
+    while linked_dict[location]:
+        image[linked_dict[location][0]][linked_dict[location][1]][1] = 0
+        image[linked_dict[location][0]][linked_dict[location][1]][2] = 0
+        location = linked_dict[location]
+    return
+
+def bfs(location, path):
+    # generates a linked list using dictionaries of parents and ending once the exit is found
+    # then back tracing from the exit to the start
+    linked_dict[location] = []
+    location = (location[0]+1, location[1])
+    linked_dict[location] = (location[0]-1, location[1])
+    queue = [location]
+    while location[0] < size-1:
+        adjacent = [(location[0], location[1] - 1),(location[0] + 1, location[1]),(location[0], location[1] + 1),(location[0] - 1, location[1])]
+        for i in adjacent:
+            if i[0] < size and i[1] < size:
+                if i not in linked_dict and image[i[0]][i[1]][0] == 255 :
+                    queue.append(i)
+                    linked_dict[i] = location
+        queue.pop(0)
+        location = queue[0]
+
+    pathfinder(location)
+    
     return []
 
 def draw(path):
@@ -51,9 +77,12 @@ def main():
     global path
     location = (0,start(image)) #y,x
     print(location)
-
-    path = dfs(location, path)
-    draw(path)
+    
+    #path = dfs(location, path)
+    #draw(path)
+   
+    bfs(location, path)
+    
     cv2.imwrite(png_input+"Solve.png",image)
     print(process_time())
 
