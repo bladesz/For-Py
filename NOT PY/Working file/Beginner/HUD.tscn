@@ -1,11 +1,21 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://dodge_assets/fonts/Xolonium-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://HUD.gd" type="Script" id=2]
 
+[sub_resource type="DynamicFont" id=1]
+size = 64
+font_data = ExtResource( 1 )
+
 [sub_resource type="DynamicFont" id=2]
 size = 64
 font_data = ExtResource( 1 )
+
+[sub_resource type="InputEventAction" id=3]
+action = "ui_select"
+
+[sub_resource type="ShortCut" id=4]
+shortcut = SubResource( 3 )
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 2 )
@@ -14,7 +24,7 @@ script = ExtResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 0.056
 margin_bottom = -0.32
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "0"
 align = 1
 __meta__ = {
@@ -27,7 +37,7 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 margin_top = -79.5
 margin_bottom = 79.5
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "Dodge the creepers!"
 align = 1
 autowrap = true
@@ -36,26 +46,21 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="StartButton" type="Button" parent="."]
-anchor_left = 0.312
-anchor_top = 0.861
-anchor_right = 0.687
-anchor_bottom = 1.0
-margin_left = 0.23999
-margin_top = 2.74963
-margin_right = 0.23999
-margin_bottom = 2.66968
-focus_mode = 0
-mouse_filter = 2
-size_flags_vertical = 4
-custom_fonts/font = SubResource( 2 )
-text = "Start"
-align = 0
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
-
 [node name="MessageTimer" type="Timer" parent="."]
-[connection signal="pressed" from="StartButton" to="." method="_on_Start_pressed"]
+
+[node name="StartButton" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -90.0
+margin_top = -84.0
+margin_right = 90.0
+custom_fonts/font = SubResource( 2 )
+shortcut = SubResource( 4 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
+[connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]

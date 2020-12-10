@@ -17,7 +17,9 @@ Mob = ExtResource( 2 )
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( -75.3171, 137.162 )
 
-[node name="Mob" parent="." instance=ExtResource( 2 )]
+[node name="Mob" parent="." groups=[
+"mobs",
+] instance=ExtResource( 2 )]
 position = Vector2( -77.4354, 52.8811 )
 
 [node name="MobTimer" type="Timer" parent="."]
